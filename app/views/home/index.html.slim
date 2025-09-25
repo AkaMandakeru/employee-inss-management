@@ -4,7 +4,7 @@
       .d-flex.justify-content-between.align-items-center.mb-4
         div
           h1.h2.mb-0 Dashboard
-          p.text-muted.mb-0 Welcome to Credishop Test Employee Management
+          p.text-muted.mb-0 Welcome to Credishop Test Proponentes Management
         = link_to "Add New Employee", new_employee_path, class: "btn btn-primary"
 
   .row.mb-4
@@ -12,12 +12,12 @@
       .card.bg-primary.text-white
         .card-body.text-center
           h3.mb-0= @total_employees
-          p.mb-0 Total Employees
+          p.mb-0 Total Proponentes
     .col-md-4
       .card.bg-success.text-white
         .card-body.text-center
           h3.mb-0= Employee.where(employee_type: 'employee').count
-          p.mb-0 Regular Employees
+          p.mb-0 Regular Proponentes
     .col-md-4
       .card.bg-info.text-white
         .card-body.text-center
@@ -28,7 +28,7 @@
     .col-12
       .card.shadow
         .card-header.d-flex.justify-content-between.align-items-center
-          h4.h5.mb-0 Recent Employees
+          h4.h5.mb-0 Recent Proponentes
           = link_to "View All", employees_path, class: "btn btn-outline-primary btn-sm"
         .card-body
           - if @employees.any?
@@ -64,6 +64,8 @@
                           = link_to "View", employee_path(employee), class: "btn btn-outline-primary"
                           = link_to "Edit", edit_employee_path(employee), class: "btn btn-outline-secondary"
                           = link_to "Delete", employee_path(employee), method: :delete, confirm: "Are you sure?", class: "btn btn-outline-danger"
+            .digg_pagination
+              = will_paginate @employees
           - else
             .text-center.py-5
               .text-muted
