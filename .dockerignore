@@ -1,51 +1,86 @@
-# See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
+# Git
+.git
+.gitignore
 
-# Ignore git directory.
-/.git/
-/.gitignore
+# Documentation
+README.md
+DOCKER.md
 
-# Ignore bundler config.
-/.bundle
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
 
-# Ignore all environment files.
-/.env*
+# Development
+.env*
+.ruby-version
+.rubocop.yml
 
-# Ignore all default key files.
-/config/master.key
-/config/credentials/*.key
+# Logs
+log/*
+tmp/*
+!log/.keep
+!tmp/.keep
 
-# Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+# Runtime data
+pids/*
+*.pid
+*.seed
+*.pid.lock
 
-# Ignore pidfiles, but keep the directory.
-/tmp/pids/*
-!/tmp/pids/.keep
+# Coverage directory used by tools like istanbul
+coverage/
 
-# Ignore storage (uploaded files in development and any SQLite databases).
-/storage/*
-!/storage/.keep
-/tmp/storage/*
-!/tmp/storage/.keep
+# nyc test coverage
+.nyc_output
 
-# Ignore assets.
-/node_modules/
-/app/assets/builds/*
-!/app/assets/builds/.keep
-/public/assets
+# Dependency directories
+node_modules/
 
-# Ignore CI service files.
-/.github
+# Optional npm cache directory
+.npm
 
-# Ignore Kamal files.
-/config/deploy*.yml
-/.kamal
+# Optional REPL history
+.node_repl_history
 
-# Ignore development files
-/.devcontainer
+# Output of 'npm pack'
+*.tgz
 
-# Ignore Docker-related files
-/.dockerignore
-/Dockerfile*
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Test files
+spec/
+test/
+.rspec
+
+# Storage
+storage/*
+!storage/.keep
+
+# Public assets (will be precompiled)
+public/assets/
+public/packs/
+public/packs-test/
+
+# Cache
+.cache/
