@@ -2,14 +2,17 @@ class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :edit, :update, :destroy]
 
   def index
-    @employees = Employee.includes(:addresses, :contacts).all
+    @employees = Employee.includes(:addresses, :contacts).paginate(page: params[:page], per_page: 5)
   end
 
   def show
+    @employee = Employee.includes(:addresses, :contacts).find(params[:id])
   end
 
   def new
     @employee = Employee.new
+    @employee.addresses.build
+    3.times { @employee.contacts.build }
   end
 
   def create
@@ -23,6 +26,11 @@ class EmployeesController < ApplicationController
   end
 
   def edit
+    @employee.addresses.build if @employee.addresses.empty?
+    # Build additional contacts up to 3 total
+    while @employee.contacts.length < 3
+      @employee.contacts.build
+    end
   end
 
   def update
@@ -45,6 +53,10 @@ class EmployeesController < ApplicationController
   end
 
   def employee_params
-    params.require(:employee).permit(:employee_type, :name, :birthdate, :document, :salary, :salary_discount)
+    params.require(:employee).permit(
+      :employee_type, :name, :birthdate, :document, :salary, :salary_discount,
+      addresses_attributes: [:id, :street, :number, :city, :state, :zipcode, :complement, :neighborhood, :status, :_destroy],
+      contacts_attributes: [:id, :contact_type, :contact_content, :_destroy]
+    )
   end
 end

@@ -1,0 +1,101 @@
+.container.py-4
+  .row.justify-content-center
+    .col-12.col-md-10.col-lg-8
+      .card.shadow
+        .card-header.d-flex.justify-content-between.align-items-center
+          h3.h4.mb-0 Employee Details
+          .btn-group
+            = link_to "Edit", edit_employee_path(@employee), class: "btn btn-outline-primary"
+            = link_to "Back to List", employees_path, class: "btn btn-outline-secondary"
+
+        .card-body
+          / Basic Information
+          .row.mb-4
+            .col-12
+              h5.text-primary.mb-3 Basic Information
+              .row
+                .col-md-6.mb-3
+                  strong Name:
+                  p.mb-0= @employee.name
+                .col-md-6.mb-3
+                  strong Document:
+                  p.mb-0= @employee.document
+                .col-md-6.mb-3
+                  strong Position:
+                  p.mb-0
+                    - case @employee.employee_type
+                    - when 'employee'
+                      span.badge.bg-primary Employee
+                    - when 'domestic_employee'
+                      span.badge.bg-success Domestic Employee
+                    - when 'worker'
+                      span.badge.bg-info Worker
+                    - else
+                      span.badge.bg-secondary Unknown
+                .col-md-6.mb-3
+                  strong Birth Date:
+                  p.mb-0= @employee.birthdate&.strftime("%B %d, %Y")
+                .col-md-6.mb-3
+                  strong Salary:
+                  p.mb-0= number_to_currency(@employee.salary)
+                .col-md-6.mb-3
+                  strong INSS Discount:
+                  p.mb-0= number_to_currency(@employee.salary_discount || 0)
+
+          / Address Information
+          - if @employee.addresses.any?
+            .row.mb-4
+              .col-12
+                h5.text-primary.mb-3 Address Information
+                - @employee.addresses.each do |address|
+                  .card.bg-light.mb-3
+                    .card-body
+                      .row
+                        .col-md-8
+                          p.mb-1
+                            strong Street:
+                            |  #{address.street}, #{address.number}
+                          - if address.complement.present?
+                            p.mb-1
+                              strong Complement:
+                              |  #{address.complement}
+                          p.mb-1
+                            strong Neighborhood:
+                            |  #{address.neighborhood}
+                        .col-md-4
+                          p.mb-1
+                            strong City:
+                            |  #{address.city}
+                          p.mb-1
+                            strong State:
+                            |  #{address.state}
+                          p.mb-1
+                            strong ZIP Code:
+                            |  #{address.zipcode}
+
+          / Contact Information
+          - if @employee.contacts.any?
+            .row.mb-4
+              .col-12
+                h5.text-primary.mb-3 Contact Information
+                - @employee.contacts.each do |contact|
+                  - if contact.contact_content.present?
+                    .card.bg-light.mb-2
+                      .card-body.py-2
+                        .row.align-items-center
+                          .col-md-3
+                            strong= contact.contact_type&.titleize
+                          .col-md-9
+                            = contact.contact_content
+
+          / Creation Information
+          .row
+            .col-12
+              .card.bg-light
+                .card-body.py-2
+                  small.text-muted
+                    strong Created:
+                    |  #{@employee.created_at.strftime("%B %d, %Y at %I:%M %p")}
+                    br
+                    strong Last Updated:
+                    |  #{@employee.updated_at.strftime("%B %d, %Y at %I:%M %p")}

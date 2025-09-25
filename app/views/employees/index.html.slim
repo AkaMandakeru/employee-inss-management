@@ -38,6 +38,8 @@
                           = link_to "View", employee_path(employee), class: "btn btn-outline-primary"
                           = link_to "Edit", edit_employee_path(employee), class: "btn btn-outline-secondary"
                           = link_to "Delete", employee_path(employee), method: :delete, confirm: "Are you sure?", class: "btn btn-outline-danger"
+            .digg_pagination
+              = will_paginate @employees
           - else
             .text-center.py-5
               .text-muted
