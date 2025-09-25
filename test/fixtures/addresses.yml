@@ -1,27 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  street: MyString
-  number: MyString
-  city: MyString
-  state: MyString
-  zipcode: MyString
-  addressable_id: 
-  addressable_type: MyString
+address_one:
+  street: "123 Main Street"
+  number: "456"
+  city: "Test City"
+  state: "TS"
+  zipcode: "12345"
+  addressable: employee_one
   address_type: 1
   status: 1
-  complement: MyString
-  neighborhood: MyString
+  complement: "Apt 101"
+  neighborhood: "Downtown"
 
-two:
-  street: MyString
-  number: MyString
-  city: MyString
-  state: MyString
-  zipcode: MyString
-  addressable_id: 
-  addressable_type: MyString
+address_two:
+  street: "456 Oak Avenue"
+  number: "789"
+  city: "Another City"
+  state: "AC"
+  zipcode: "54321"
+  addressable: employee_two
   address_type: 1
   status: 1
-  complement: MyString
-  neighborhood: MyString
+  complement: "Unit 202"
+  neighborhood: "Uptown"

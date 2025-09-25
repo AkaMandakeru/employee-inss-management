@@ -2,8 +2,9 @@
   .row
     .col-12
       h1.h2.mb-4 Reports & Analytics
-      p.text-muted.mb-4 Employee statistics and insights
+      p.text-muted.mb-4 Employee statistics and INSS salary bracket analysis
 
+  / Summary Cards
   .row.mb-4
     .col-md-3
       .card.bg-primary.text-white
@@ -23,54 +24,108 @@
     .col-md-3
       .card.bg-warning.text-white
         .card-body.text-center
-          h3.mb-0= Employee.where(employee_type: 1).count
-          p.mb-0 Managers
+          h3.mb-0= number_to_currency(@bracket_statistics.values.sum { |s| s[:total_inss] })
+          p.mb-0 Total INSS
 
+  / Charts Section
+  .row.mb-4 data-controller="reports-charts" data-reports-charts-salary-brackets-data-value="#{@salary_brackets_data.to_json}" data-reports-charts-inss-distribution-data-value="#{@inss_distribution_data.to_json}"
+    .col-md-6
+      .card.shadow
+        .card-header
+          h4.h5.mb-0 Employees by INSS Salary Brackets
+        .card-body
+          canvas data-reports-charts-target="salaryBracketsChart" height="300"
+    .col-md-6
+      .card.shadow
+        .card-header
+          h4.h5.mb-0 INSS Distribution by Brackets
+        .card-body
+          canvas data-reports-charts-target="inssDistributionChart" height="300"
+
+  / Detailed Tables
+  .row.mb-4
+    .col-12
+      .card.shadow
+        .card-header
+          h4.h5.mb-0 INSS Salary Bracket Analysis
+        .card-body
+          .table-responsive
+            table.table.table-hover
+              thead.table-light
+                tr
+                  th Bracket Range
+                  th INSS Rate
+                  th Employees
+                  th Percentage
+                  th Total Salary
+                  th Average Salary
+                  th Total INSS
+                  th Average INSS
+              tbody
+                - @salary_brackets.each_with_index do |(key, bracket), index|
+                  - stats = @bracket_statistics[key]
+                  - bracket_name = case index
+                  - when 0 then "1st Bracket"
+                  - when 1 then "2nd Bracket"
+                  - when 2 then "3rd Bracket"
+                  - when 3 then "4th Bracket"
+                  tr
+                    td
+                      strong= bracket_name
+                      br
+                      small.text-muted R$ #{number_with_precision(bracket[:min], precision: 2)} - R$ #{number_with_precision(bracket[:max], precision: 2)}
+                    td
+                      span.badge.bg-secondary= "#{(bracket[:rate] * 100).to_i}%"
+                    td
+                      strong= stats[:count]
+                    td
+                      span.badge.bg-info= "#{stats[:percentage]}%"
+                    td= number_to_currency(stats[:total_salary])
+                    td= number_to_currency(stats[:average_salary])
+                    td= number_to_currency(stats[:total_inss])
+                    td= number_to_currency(stats[:average_inss])
+
+  / Employee Details by Bracket
   .row
-    .col-md-6
-      .card.shadow
-        .card-header
-          h4.h5.mb-0 Employees by Position
-        .card-body
-          - positions = {
-              1 => 'Manager',
-              2 => 'Developer',
-              3 => 'Designer',
-              4 => 'Employee'
-            }
-          - positions.each do |type, name|
-            - count = Employee.where(employee_type: type).count
-            - percentage = @employees_count > 0 ? (count.to_f / @employees_count * 100).round(1) : 0
-            .d-flex.justify-content-between.align-items-center.mb-2
-              span= name
-              span
-                strong= "#{count} (#{percentage}%)"
-            .progress.mb-3 style="height: 8px;"
-              .progress-bar role="progressbar" style="width: #{percentage}%" aria-valuenow="#{percentage}" aria-valuemin="0" aria-valuemax="100"
+    - @salary_brackets.each_with_index do |(key, bracket), index|
+      - if bracket[:employees].any?
+        .col-md-6.mb-4
+          .card.shadow
+            .card-header
+              h5.h6.mb-0
+                - if index == 0
+                  | 1st Bracket Employees
+                - elsif index == 1
+                  | 2nd Bracket Employees
+                - elsif index == 2
+                  | 3rd Bracket Employees
+                - elsif index == 3
+                  | 4th Bracket Employees
+              small.text-muted= "(#{bracket[:employees].count} employees)"
+            .card-body
+              .table-responsive
+                table.table.table-sm
+                  thead.table-light
+                    tr
+                      th Name
+                      th Position
+                      th Salary
+                      th INSS
+                  tbody
+                    - bracket[:employees].each do |employee|
+                      tr
+                        td= employee.name
+                        td
+                          - case employee.employee_type
+                          - when 'employee'
+                            span.badge.bg-primary Employee
+                          - when 'domestic_employee'
+                            span.badge.bg-success Domestic Employee
+                          - when 'worker'
+                            span.badge.bg-info Worker
+                          - else
+                            span.badge.bg-secondary Unknown
+                        td= number_to_currency(employee.salary)
+                        td= number_to_currency(calculate_inss_for_employee(employee.salary.to_f))
 
-    .col-md-6
-      .card.shadow
-        .card-header
-          h4.h5.mb-0 Recent Activity
-        .card-body
-          - recent_employees = Employee.order(created_at: :desc).limit(5)
-          - if recent_employees.any?
-            - recent_employees.each do |employee|
-              .d-flex.justify-content-between.align-items-center.mb-3
-                div
-                  strong= employee.name
-                  br
-                  small.text-muted= employee.created_at.strftime("%B %d, %Y")
-                span.badge.bg-secondary
-                  - case employee.employee_type
-                  - when 1
-                    | Manager
-                  - when 2
-                    | Developer
-                  - when 3
-                    | Designer
-                  - else
-                    | Employee
-          - else
-            .text-center.text-muted
-              p No employees found
+

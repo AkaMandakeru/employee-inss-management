@@ -1,11 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  contact_type: MyString
-  contact_content: MyString
-  employee: one
+contact_one:
+  contact_type: "phone"
+  contact_content: "123-456-7890"
+  employee: employee_one
 
-two:
-  contact_type: MyString
-  contact_content: MyString
-  employee: two
+contact_two:
+  contact_type: "email"
+  contact_content: "john.doe@example.com"
+  employee: employee_one
+
+contact_three:
+  contact_type: "mobile"
+  contact_content: "987-654-3210"
+  employee: employee_two
+
+contact_four:
+  contact_type: "email"
+  contact_content: "jane.smith@example.com"
+  employee: employee_two

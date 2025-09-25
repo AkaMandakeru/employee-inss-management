@@ -3,16 +3,16 @@
     .col-12.col-md-10.col-lg-8
       .card.shadow
         .card-header.d-flex.justify-content-between.align-items-center
-          h3.h4.mb-0 Employee Details
+          h3.h4.mb-0 Detalhes do Proponente
           .btn-group
-            = link_to "Edit", edit_employee_path(@employee), class: "btn btn-outline-primary"
-            = link_to "Back to List", employees_path, class: "btn btn-outline-secondary"
+            = link_to "Editar", edit_employee_path(@employee), class: "btn btn-outline-primary"
+            = link_to "Voltar para a lista", employees_path, class: "btn btn-outline-secondary"
 
         .card-body
           / Basic Information
           .row.mb-4
             .col-12
-              h5.text-primary.mb-3 Basic Information
+              h5.text-primary.mb-3 Informações Básicas
               .row
                 .col-md-6.mb-3
                   strong Name:

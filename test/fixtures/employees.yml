@@ -1,15 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+employee_one:
   employee_type: 1
-  name: MyString
-  birthdate: 2025-09-24
-  document: MyString
-  salary: 9.99
+  name: "John Doe"
+  birthdate: 1990-01-15
+  document: "12345678901"
+  salary: 3000.00
+  salary_discount: 270.00
 
-two:
-  employee_type: 1
-  name: MyString
-  birthdate: 2025-09-24
-  document: MyString
-  salary: 9.99
+employee_two:
+  employee_type: 2
+  name: "Jane Smith"
+  birthdate: 1985-05-20
+  document: "98765432100"
+  salary: 2500.00
+  salary_discount: 225.00
+
+employee_three:
+  employee_type: 3
+  name: "Bob Johnson"
+  birthdate: 1988-12-10
+  document: "55555555555"
+  salary: 4000.00
+  salary_discount: 360.00
