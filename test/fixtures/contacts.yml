@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  contact_type: MyString
+  contact_content: MyString
+  employee: one
+
+two:
+  contact_type: MyString
+  contact_content: MyString
+  employee: two

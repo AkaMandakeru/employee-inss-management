@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  employee_type: 1
+  name: MyString
+  birthdate: 2025-09-24
+  document: MyString
+  salary: 9.99
+
+two:
+  employee_type: 1
+  name: MyString
+  birthdate: 2025-09-24
+  document: MyString
+  salary: 9.99

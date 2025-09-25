@@ -1,0 +1,76 @@
+.container-fluid.py-4
+  .row
+    .col-12
+      h1.h2.mb-4 Reports & Analytics
+      p.text-muted.mb-4 Employee statistics and insights
+
+  .row.mb-4
+    .col-md-3
+      .card.bg-primary.text-white
+        .card-body.text-center
+          h3.mb-0= @employees_count
+          p.mb-0 Total Employees
+    .col-md-3
+      .card.bg-success.text-white
+        .card-body.text-center
+          h3.mb-0= number_to_currency(@total_salary)
+          p.mb-0 Total Payroll
+    .col-md-3
+      .card.bg-info.text-white
+        .card-body.text-center
+          h3.mb-0= number_to_currency(@average_salary)
+          p.mb-0 Average Salary
+    .col-md-3
+      .card.bg-warning.text-white
+        .card-body.text-center
+          h3.mb-0= Employee.where(employee_type: 1).count
+          p.mb-0 Managers
+
+  .row
+    .col-md-6
+      .card.shadow
+        .card-header
+          h4.h5.mb-0 Employees by Position
+        .card-body
+          - positions = {
+              1 => 'Manager',
+              2 => 'Developer',
+              3 => 'Designer',
+              4 => 'Employee'
+            }
+          - positions.each do |type, name|
+            - count = Employee.where(employee_type: type).count
+            - percentage = @employees_count > 0 ? (count.to_f / @employees_count * 100).round(1) : 0
+            .d-flex.justify-content-between.align-items-center.mb-2
+              span= name
+              span
+                strong= "#{count} (#{percentage}%)"
+            .progress.mb-3 style="height: 8px;"
+              .progress-bar role="progressbar" style="width: #{percentage}%" aria-valuenow="#{percentage}" aria-valuemin="0" aria-valuemax="100"
+
+    .col-md-6
+      .card.shadow
+        .card-header
+          h4.h5.mb-0 Recent Activity
+        .card-body
+          - recent_employees = Employee.order(created_at: :desc).limit(5)
+          - if recent_employees.any?
+            - recent_employees.each do |employee|
+              .d-flex.justify-content-between.align-items-center.mb-3
+                div
+                  strong= employee.name
+                  br
+                  small.text-muted= employee.created_at.strftime("%B %d, %Y")
+                span.badge.bg-secondary
+                  - case employee.employee_type
+                  - when 1
+                    | Manager
+                  - when 2
+                    | Developer
+                  - when 3
+                    | Designer
+                  - else
+                    | Employee
+          - else
+            .text-center.text-muted
+              p No employees found

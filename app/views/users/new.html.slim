@@ -1,0 +1,38 @@
+.container-fluid.d-flex.align-items-center.justify-content-center.min-vh-100.bg-light
+  .row.w-100.justify-content-center
+    .col-12.col-sm-8.col-md-6.col-lg-4.col-xl-3
+      .card.shadow
+        .card-body.p-4
+          .text-center.mb-4
+            h2.h4.text-dark.mb-0 Sign Up
+            p.text-muted.small.mt-2 Please fill out the form below to create an account.
+
+          / Flash messages
+          - if flash[:alert]
+            .alert.alert-danger.alert-dismissible.fade.show role="alert"
+              = flash[:alert]
+              button.btn-close type="button" data-bs-dismiss="alert" aria-label="Close"
+
+          - if flash[:notice]
+            .alert.alert-success.alert-dismissible.fade.show role="alert"
+              = flash[:notice]
+              button.btn-close type="button" data-bs-dismiss="alert" aria-label="Close"
+
+          = form_with url: users_path, local: true, class: "needs-validation", novalidate: true do |form|
+            .mb-3
+              = form.label :email_address, "Email Address", class: "form-label"
+              = form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "form-control form-control-lg"
+              .invalid-feedback
+                | Please provide a valid email address.
+
+            .mb-3
+              = form.label :password, "Password", class: "form-label"
+              = form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "form-control form-control-lg"
+              .invalid-feedback
+                | Please provide your password.
+
+            .d-grid.gap-2.mb-3
+              = form.submit "Submit", class: "btn btn-primary btn-lg"
+
+            .text-center
+              = link_to "Forgot password?", new_password_path, class: "text-decoration-none"

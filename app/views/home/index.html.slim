@@ -1,0 +1,73 @@
+.container-fluid.py-4
+  .row
+    .col-12
+      .d-flex.justify-content-between.align-items-center.mb-4
+        div
+          h1.h2.mb-0 Dashboard
+          p.text-muted.mb-0 Welcome to Credishop Test Employee Management
+        = link_to "Add New Employee", new_employee_path, class: "btn btn-primary"
+
+  .row.mb-4
+    .col-md-4
+      .card.bg-primary.text-white
+        .card-body.text-center
+          h3.mb-0= @total_employees
+          p.mb-0 Total Employees
+    .col-md-4
+      .card.bg-success.text-white
+        .card-body.text-center
+          h3.mb-0= Employee.where(employee_type: 'employee').count
+          p.mb-0 Regular Employees
+    .col-md-4
+      .card.bg-info.text-white
+        .card-body.text-center
+          h3.mb-0= number_to_currency(Employee.sum(:salary) || 0)
+          p.mb-0 Total Payroll
+
+  .row
+    .col-12
+      .card.shadow
+        .card-header.d-flex.justify-content-between.align-items-center
+          h4.h5.mb-0 Recent Employees
+          = link_to "View All", employees_path, class: "btn btn-outline-primary btn-sm"
+        .card-body
+          - if @employees.any?
+            .table-responsive
+              table.table.table-hover
+                thead.table-light
+                  tr
+                    th Name
+                    th Document
+                    th Position
+                    th Salary
+                    th Birth Date
+                    th Actions
+                tbody
+                  - @employees.each do |employee|
+                    tr
+                      td= employee.name
+                      td= employee.document
+                      td
+                        - case employee.employee_type
+                        - when 'employee'
+                          span.badge.bg-primary Employee
+                        - when 'domestic_employee'
+                          span.badge.bg-success Domestic Employee
+                        - when 'worker'
+                          span.badge.bg-info Worker
+                        - else
+                          span.badge.bg-secondary Unknown
+                      td= number_to_currency(employee.salary)
+                      td= employee.birthdate&.strftime("%m/%d/%Y")
+                      td
+                        .btn-group.btn-group-sm role="group"
+                          = link_to "View", employee_path(employee), class: "btn btn-outline-primary"
+                          = link_to "Edit", edit_employee_path(employee), class: "btn btn-outline-secondary"
+                          = link_to "Delete", employee_path(employee), method: :delete, confirm: "Are you sure?", class: "btn btn-outline-danger"
+          - else
+            .text-center.py-5
+              .text-muted
+                i.fas.fa-users.fa-3x.mb-3
+                h5 No employees found
+                p Get started by adding your first employee
+                = link_to "Add Employee", new_employee_path, class: "btn btn-primary"

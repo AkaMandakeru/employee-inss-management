@@ -1,0 +1,46 @@
+.container-fluid.py-4
+  .row
+    .col-12
+      .d-flex.justify-content-between.align-items-center.mb-4
+        div
+          h1.h2.mb-0 Employees
+          p.text-muted.mb-0 Manage your employee database
+        = link_to "Add New Employee", new_employee_path, class: "btn btn-primary"
+
+  .row
+    .col-12
+      .card.shadow
+        .card-body
+          - if @employees.any?
+            .table-responsive
+              table.table.table-hover
+                thead.table-light
+                  tr
+                    th Name
+                    th Document
+                    th Position
+                    th Salary
+                    th Birth Date
+                    th Created
+                    th Actions
+                tbody
+                  - @employees.each do |employee|
+                    tr
+                      td= employee.name
+                      td= employee.document
+                      td
+                        span.badge.bg-secondary = employee.employee_type&.titleize
+                      td= number_to_currency(employee.salary)
+                      td= employee.birthdate&.strftime("%m/%d/%Y")
+                      td= employee.created_at.strftime("%m/%d/%Y")
+                      td
+                        .btn-group.btn-group-sm role="group"
+                          = link_to "View", employee_path(employee), class: "btn btn-outline-primary"
+                          = link_to "Edit", edit_employee_path(employee), class: "btn btn-outline-secondary"
+                          = link_to "Delete", employee_path(employee), method: :delete, confirm: "Are you sure?", class: "btn btn-outline-danger"
+          - else
+            .text-center.py-5
+              .text-muted
+                h5 No employees found
+                p Get started by adding your first employee
+                = link_to "Add Employee", new_employee_path, class: "btn btn-primary"

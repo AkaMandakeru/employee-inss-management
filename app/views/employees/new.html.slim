@@ -1,0 +1,56 @@
+.container.py-4
+  .row.justify-content-center
+    .col-12.col-md-8.col-lg-6
+      .card.shadow
+        .card-header
+          h3.h4.mb-0 Add New Employee
+        .card-body
+          = form_with model: @employee, local: true, class: "needs-validation", novalidate: true do |form|
+            .row
+              .col-md-6.mb-3
+                = form.label :name, "Full Name", class: "form-label"
+                = form.text_field :name, required: true, class: "form-control", placeholder: "Enter employee name"
+                .invalid-feedback
+                  | Please provide a valid name.
+
+              .col-md-6.mb-3
+                = form.label :document, "Document", class: "form-label"
+                = form.text_field :document, required: true, class: "form-control", placeholder: "Enter document number"
+                .invalid-feedback
+                  | Please provide a valid document.
+
+            .row
+              .col-md-6.mb-3
+                = form.label :employee_type, "Position", class: "form-label"
+                - position_options = [['Employee', 'employee'], ['Domestic Employee', 'domestic_employee'], ['Worker', 'worker']]
+                = form.select :employee_type,
+                    options_for_select(position_options, @employee.employee_type),
+                    { prompt: 'Select position' },
+                    { required: true, class: "form-select" }
+                .invalid-feedback
+                  | Please select a position.
+
+              .col-md-6.mb-3
+                = form.label :birthdate, "Birth Date", class: "form-label"
+                = form.date_field :birthdate, class: "form-control"
+                .invalid-feedback
+                  | Please provide a valid birth date.
+
+            .mb-3 data-controller="salary-calculator"
+              = form.label :salary, "Salary", class: "form-label"
+              = form.number_field :salary,
+                  step: 0.01,
+                  min: 0,
+                  class: "form-control",
+                  placeholder: "Enter salary amount",
+                  "data-salary-calculator-target" => "salaryInput",
+                  "data-action" => "input->salary-calculator#calculateDiscount"
+              .invalid-feedback
+                | Please provide a valid salary.
+              .mt-2 data-salary-calculator-target="discountDisplay" style="display: none;"
+              / Hidden field to store the calculated discount
+              = form.hidden_field :salary_discount, "data-salary-calculator-target" => "discountInput"
+
+            .d-flex.gap-2
+              = form.submit "Create Employee", class: "btn btn-primary"
+              = link_to "Cancel", employees_path, class: "btn btn-secondary"
